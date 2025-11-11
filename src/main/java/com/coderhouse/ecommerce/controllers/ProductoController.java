@@ -1,7 +1,7 @@
 package com.coderhouse.ecommerce.controllers;
 
 import com.coderhouse.ecommerce.abstracts.Producto;
-import com.coderhouse.ecommerce.repositories.ProductoRepository;
+import com.coderhouse.ecommerce.services.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,44 +14,70 @@ import java.util.List;
 public class ProductoController {
 
     @Autowired
-    private ProductoRepository productoRepository;
+    private ProductoService productoService;
 
     @GetMapping
-    public ResponseEntity<List<Producto>> getAllProducts() {
+    public ResponseEntity<List<Producto>> getAllProductos() {
         try {
-            List<Producto> products = productoRepository.findAll();
-            return ResponseEntity.ok(products);
+            List<Producto> productos = productoService.findAll();
+            return ResponseEntity.ok(productos);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping("/{productoId}")
+    public ResponseEntity<Producto> getProductoById(@PathVariable Long productoId) {
+        try {
+            Producto producto = productoService.findById(productoId);
+            return ResponseEntity.ok(producto);
+        }
+        catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
         }
         catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }
 
-    @GetMapping("/{productId}")
-    public ResponseEntity<Producto> getProductById(@PathVariable Long productId){
+    @PostMapping("/create")
+    public ResponseEntity<Producto> createProducto(@RequestBody Producto producto) {
         try {
-            if(productoRepository.existsById(productId)) {
-                Producto p=productoRepository.findById(productId).get();
-                return ResponseEntity.ok(p);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
+            Producto creado = productoService.save(producto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(creado);
+        }
+        catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<Producto> createProduct(@RequestBody Producto prod) {
+    @PutMapping("/{productoId}")
+    public ResponseEntity<Producto> updateProductoById(
+            @PathVariable Long productoId,
+            @RequestBody Producto productoUpdated) {
         try {
-            Producto pCreado = productoRepository.save(prod);
-            return ResponseEntity.status(HttpStatus.CREATED).body(pCreado);
+            Producto producto = productoService.update(productoId, productoUpdated);
+            return ResponseEntity.ok(producto);
+        }
+        catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+        catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @DeleteMapping("/{productoId}")
+    public ResponseEntity<Void> deleteProductoById(@PathVariable Long productoId) {
+        try {
+            productoService.deleteById(productoId);
+            return ResponseEntity.noContent().build();
+        }
+        catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
         }
         catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }
 }
-
-
-

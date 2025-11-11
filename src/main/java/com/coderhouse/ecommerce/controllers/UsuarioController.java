@@ -1,7 +1,7 @@
 package com.coderhouse.ecommerce.controllers;
 
 import com.coderhouse.ecommerce.entities.Usuario;
-import com.coderhouse.ecommerce.repositories.UsuarioRepository;
+import com.coderhouse.ecommerce.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +14,12 @@ import java.util.List;
 public class UsuarioController {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioService usuarioService;
 
     @GetMapping
     public ResponseEntity<List<Usuario>> getAllUsers(){
         try {
-            List<Usuario> users = usuarioRepository.findAll();
+            List<Usuario> users = usuarioService.findAll();
             return ResponseEntity.ok(users);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
@@ -29,13 +29,13 @@ public class UsuarioController {
     @GetMapping("/{usuarioId}")
     public ResponseEntity<Usuario> getUserById(@PathVariable Long usuarioId){
         try {
-            if(usuarioRepository.existsById(usuarioId)) {
-                Usuario user=usuarioRepository.findById(usuarioId).get();
-                return ResponseEntity.ok(user);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
+            Usuario user = usuarioService.findById(usuarioId);
+            return ResponseEntity.ok(user);
+        }
+        catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+        catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }
@@ -43,11 +43,40 @@ public class UsuarioController {
     @PostMapping("/create")
     public ResponseEntity<Usuario> createUser(@RequestBody Usuario user) {
         try {
-            Usuario uCreado = usuarioRepository.save(user);
+            Usuario uCreado = usuarioService.save(user);
             return ResponseEntity.status(HttpStatus.CREATED).body(uCreado);
         }
         catch (Exception e) {
             return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<Usuario> updateUserById(
+            @PathVariable Long userId, @RequestBody Usuario userUpdated) {
+        try {
+            Usuario user = usuarioService.update(userId, userUpdated);
+            return ResponseEntity.ok(user);
+        }
+        catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+        catch (Exception e) {
+            return  ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> deleteUserById(@PathVariable Long userId) {
+        try {
+            usuarioService.deleteById(userId);
+            return ResponseEntity.noContent().build();
+        }
+        catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+        catch (Exception e) {
+            return  ResponseEntity.internalServerError().build();
         }
     }
 }
