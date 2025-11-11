@@ -1,8 +1,24 @@
 package com.coderhouse.ecommerce.abstracts;
 
+import com.coderhouse.ecommerce.entities.Accesorio;
+import com.coderhouse.ecommerce.entities.Ropa;
 import com.coderhouse.ecommerce.exceptions.StockInsuficienteException;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.*;
+import lombok.Data;
 
+
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "tipo"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Ropa.class, name = "ropa"),
+        @JsonSubTypes.Type(value = Accesorio.class, name = "accesorio")
+})
+@Data
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "productos")
@@ -31,38 +47,6 @@ public abstract class Producto {
     }
 
     /* Getters y Setters */
-
-    public long getId_prod() {
-        return id_prod;
-    }
-
-    public void setId_prod(long id_prod) {
-        this.id_prod = id_prod;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(double precio) {
-        this.precio = precio;
-    }
-
-    public int getStock() {
-        return stock;
-    }
-
-    public void setStock(int stock) {
-        this.stock = stock;
-    }
 
     /* Metodos */
 
