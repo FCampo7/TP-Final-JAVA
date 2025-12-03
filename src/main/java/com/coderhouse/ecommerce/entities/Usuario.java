@@ -36,7 +36,7 @@ public class Usuario {
 
     @Column(name = "nombre", nullable = false)
     @Schema(
-            description = "Nombre del usuario", ProductoDTO p
+            description = "Nombre del usuario",
             example = "Juan",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
