@@ -2,6 +2,12 @@ package com.coderhouse.ecommerce.controllers;
 
 import com.coderhouse.ecommerce.entities.Usuario;
 import com.coderhouse.ecommerce.services.UsuarioService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,11 +17,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/usuarios")
+@Tag(name = "Gestión de Usuarios", description = "Endpoints para gestionar usuarios")
 public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
 
+    @Operation(summary = "Obtener la lista de todos los usuarios")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Lista de Usuarios obtenida correctamente", content = {@Content(mediaType = "Aplication/json", schema = @Schema(implementation = Usuario.class))}),
+                    @ApiResponse(responseCode = "500", description = "Error Interno de Servidor", content = @Content)
+            }
+    )
     @GetMapping
     public ResponseEntity<List<Usuario>> getAllUsers(){
         try {
@@ -26,6 +40,16 @@ public class UsuarioController {
         }
     }
 
+    @Operation(summary = "Obtener un Usuario por su ID")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Retorno correcto de Usuario con ID especificado", content = {
+                            @Content(mediaType = "Aplication/json", schema = @Schema(implementation = Usuario.class))
+                    }),
+                    @ApiResponse(responseCode = "404", description = "Usuario no encontrado", content = @Content),
+                    @ApiResponse(responseCode = "500", description = "Error Interno de Servidor", content = @Content)
+            }
+    )
     @GetMapping("/{usuarioId}")
     public ResponseEntity<Usuario> getUserById(@PathVariable Long usuarioId){
         try {
@@ -40,6 +64,15 @@ public class UsuarioController {
         }
     }
 
+    @Operation(summary = "Crear un Usuario")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "201", description = "Usuario creado correctamente", content = {
+                            @Content(mediaType = "Aplication/json", schema = @Schema(implementation = Usuario.class))
+                    }),
+                    @ApiResponse(responseCode = "500", description = "Error Interno de Servidor", content = @Content)
+            }
+    )
     @PostMapping("/create")
     public ResponseEntity<Usuario> createUser(@RequestBody Usuario user) {
         try {
@@ -51,6 +84,16 @@ public class UsuarioController {
         }
     }
 
+    @Operation(summary = "Actualizar un Usuario por su ID")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Usuario actualizado correctamente", content = {
+                            @Content(mediaType = "Aplication/json", schema = @Schema(implementation = Usuario.class))
+                    }),
+                    @ApiResponse(responseCode = "404", description = "Usuario no encontrado", content = @Content),
+                    @ApiResponse(responseCode = "500", description = "Error Interno de Servidor", content = @Content)
+            }
+    )
     @PutMapping("/{userId}")
     public ResponseEntity<Usuario> updateUserById(
             @PathVariable Long userId, @RequestBody Usuario userUpdated) {
@@ -66,6 +109,16 @@ public class UsuarioController {
         }
     }
 
+    @Operation(summary = "Eliminar un Usuario por su ID")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Usuario eliminado correctamente", content = {
+                            @Content(mediaType = "Aplication/json", schema = @Schema(implementation = Usuario.class))
+                    }),
+                    @ApiResponse(responseCode = "404", description = "Usuario no encontrado", content = @Content),
+                    @ApiResponse(responseCode = "500", description = "Error Interno de Servidor", content = @Content)
+            }
+    )
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> deleteUserById(@PathVariable Long userId) {
         try {

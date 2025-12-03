@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "usuarios")
 @Schema(
         description = "Modelo de Usuario del sistema",
         example = """
@@ -22,7 +23,6 @@ import lombok.Data;
     }
     """
 )
-@Table(name = "usuarios")
 public class Usuario {
 
     @Id
@@ -89,12 +89,10 @@ public class Usuario {
             requiredMode = Schema.RequiredMode.REQUIRED,
             allowableValues = {"Cliente", "Administrador"}
     )
-    protected String Rol; //Rol puede ser Cliente o Administrador
-
-    /* Constructores */
+    protected String Rol;
 
     public Usuario() {
-        this.Rol="Cliente";
+        this.Rol = "Cliente";
     }
 
     public Usuario(String nombre, String apellido, String email, String password, long DNI, String direccion) {
@@ -104,7 +102,6 @@ public class Usuario {
         this.Password = password;
         this.DNI = DNI;
         this.Direccion = direccion;
-        this.Rol="Cliente";
+        this.Rol = "Cliente";
     }
-
 }
