@@ -1,8 +1,9 @@
 # TP Fnal JAVA de la diplomatura en desarrollo full stack web de CoderHouse
 
 ## 📦 Qué es este proyecto
+
 **TP-Final-JAVA** es un backend para una tienda online (e-commerce) desarrollado en **Java + Spring Boot**.  
-Permite gestionar **usuarios** y **productos** (con subtipos: *Ropa* y *Accesorios*) utilizando herencia JPA, DTOs, servicios, repositorios y controladores REST.
+Permite gestionar **usuarios** y **productos** (con subtipos: _Ropa_ y _Accesorios_) utilizando herencia JPA, DTOs, servicios, repositorios y controladores REST.
 
 Es el proyecto final de la diplomatura Full-Stack Web de CoderHouse.
 
@@ -10,18 +11,19 @@ Es el proyecto final de la diplomatura Full-Stack Web de CoderHouse.
 
 ## 🧩 Funcionalidades principales
 
-- CRUD completo de **Productos**
-    - Producto base `Producto`
-    - Subclases `Ropa` y `Accesorio` usando *Herencia JOINED*
-- CRUD de **Usuarios**
-- API REST organizada y extensible
-- Manejo de excepciones básicas
-- Serialización polimórfica mediante `@JsonTypeInfo`
-- Arquitectura en capas: Controller → Service → Repository → Entity
+-   CRUD completo de **Productos**
+    -   Producto base `Producto`
+    -   Subclases `Ropa` y `Accesorio` usando _Herencia JOINED_
+-   CRUD de **Usuarios**
+-   API REST organizada y extensible
+-   Manejo de excepciones básicas
+-   Serialización polimórfica mediante `@JsonTypeInfo`
+-   Arquitectura en capas: Controller → Service → Repository → Entity
 
 ---
 
 ## 📁 Estructura del proyecto
+
 ```bash
 ./src
 └── main
@@ -41,7 +43,7 @@ Es el proyecto final de la diplomatura Full-Stack Web de CoderHouse.
     │               ├── dto
     │               │   ├── AccesorioDTO.java
     │               │   ├── ProductoDTO.java
-    │               │   └── RopaDTO.java
+    │               │   ├── RopaDTO.java
     │               │   └── UsuarioDTO.java
     │               ├── EcommerceApplication.java
     │               ├── entities
@@ -60,7 +62,8 @@ Es el proyecto final de la diplomatura Full-Stack Web de CoderHouse.
     │                   └── UsuarioService.java
     └── resources
         ├── application.properties
-        └── Entrega Java.postman_collection.json
+        ├── Entrega Java.postman_collection.json
+        └── SQL de la DB.sql
 
 ```
 
@@ -68,16 +71,16 @@ Es el proyecto final de la diplomatura Full-Stack Web de CoderHouse.
 
 ## 🛠 Tecnologías utilizadas
 
-* Java 
-* Spring Boot 
-* Spring Data JPA / Hibernate 
-* Maven
+-   Java
+-   Spring Boot
+-   Spring Data JPA / Hibernate
+-   Maven
 
 ---
 
 ## 🙋 Autor
 
- ### Francisco Campo — desarrollador / autor original
+### Francisco Campo — desarrollador / autor original
 
 ---
 
