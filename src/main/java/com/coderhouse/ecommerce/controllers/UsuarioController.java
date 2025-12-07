@@ -1,5 +1,6 @@
 package com.coderhouse.ecommerce.controllers;
 
+import com.coderhouse.ecommerce.dto.UsuarioDTO;
 import com.coderhouse.ecommerce.entities.Usuario;
 import com.coderhouse.ecommerce.services.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/usuarios")
@@ -26,15 +28,18 @@ public class UsuarioController {
     @Operation(summary = "Obtener la lista de todos los usuarios")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Lista de Usuarios obtenida correctamente", content = {@Content(mediaType = "Aplication/json", schema = @Schema(implementation = Usuario.class))}),
+                    @ApiResponse(responseCode = "200", description = "Lista de Usuarios obtenida correctamente", content = {@Content(mediaType = "Aplication/json", schema = @Schema(implementation = UsuarioDTO.class))}),
                     @ApiResponse(responseCode = "500", description = "Error Interno de Servidor", content = @Content)
             }
     )
     @GetMapping
-    public ResponseEntity<List<Usuario>> getAllUsers(){
+    public ResponseEntity<List<UsuarioDTO>> getAllUsers(){
         try {
             List<Usuario> users = usuarioService.findAll();
-            return ResponseEntity.ok(users);
+            List<UsuarioDTO> usersDTO = users.stream()
+                    .map(UsuarioDTO::new)
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(usersDTO);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
@@ -44,17 +49,17 @@ public class UsuarioController {
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Retorno correcto de Usuario con ID especificado", content = {
-                            @Content(mediaType = "Aplication/json", schema = @Schema(implementation = Usuario.class))
+                            @Content(mediaType = "Aplication/json", schema = @Schema(implementation = UsuarioDTO.class))
                     }),
                     @ApiResponse(responseCode = "404", description = "Usuario no encontrado", content = @Content),
                     @ApiResponse(responseCode = "500", description = "Error Interno de Servidor", content = @Content)
             }
     )
     @GetMapping("/{usuarioId}")
-    public ResponseEntity<Usuario> getUserById(@PathVariable Long usuarioId){
+    public ResponseEntity<UsuarioDTO> getUserById(@PathVariable Long usuarioId){
         try {
             Usuario user = usuarioService.findById(usuarioId);
-            return ResponseEntity.ok(user);
+            return ResponseEntity.ok(new UsuarioDTO(user));
         }
         catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
@@ -68,16 +73,16 @@ public class UsuarioController {
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "201", description = "Usuario creado correctamente", content = {
-                            @Content(mediaType = "Aplication/json", schema = @Schema(implementation = Usuario.class))
+                            @Content(mediaType = "Aplication/json", schema = @Schema(implementation = UsuarioDTO.class))
                     }),
                     @ApiResponse(responseCode = "500", description = "Error Interno de Servidor", content = @Content)
             }
     )
     @PostMapping("/create")
-    public ResponseEntity<Usuario> createUser(@RequestBody Usuario user) {
+    public ResponseEntity<UsuarioDTO> createUser(@RequestBody Usuario user) {
         try {
             Usuario uCreado = usuarioService.save(user);
-            return ResponseEntity.status(HttpStatus.CREATED).body(uCreado);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new UsuarioDTO(uCreado));
         }
         catch (Exception e) {
             return ResponseEntity.internalServerError().build();
@@ -88,18 +93,18 @@ public class UsuarioController {
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Usuario actualizado correctamente", content = {
-                            @Content(mediaType = "Aplication/json", schema = @Schema(implementation = Usuario.class))
+                            @Content(mediaType = "Aplication/json", schema = @Schema(implementation = UsuarioDTO.class))
                     }),
                     @ApiResponse(responseCode = "404", description = "Usuario no encontrado", content = @Content),
                     @ApiResponse(responseCode = "500", description = "Error Interno de Servidor", content = @Content)
             }
     )
     @PutMapping("/{userId}")
-    public ResponseEntity<Usuario> updateUserById(
+    public ResponseEntity<UsuarioDTO> updateUserById(
             @PathVariable Long userId, @RequestBody Usuario userUpdated) {
         try {
             Usuario user = usuarioService.update(userId, userUpdated);
-            return ResponseEntity.ok(user);
+            return ResponseEntity.ok(new UsuarioDTO(user));
         }
         catch (IllegalArgumentException e) {
             return ResponseEntity.notFound().build();
@@ -113,7 +118,7 @@ public class UsuarioController {
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Usuario eliminado correctamente", content = {
-                            @Content(mediaType = "Aplication/json", schema = @Schema(implementation = Usuario.class))
+                            @Content(mediaType = "Aplication/json", schema = @Schema(implementation = UsuarioDTO.class))
                     }),
                     @ApiResponse(responseCode = "404", description = "Usuario no encontrado", content = @Content),
                     @ApiResponse(responseCode = "500", description = "Error Interno de Servidor", content = @Content)

@@ -1,7 +1,6 @@
 package com.coderhouse.ecommerce.controllers;
 
 import com.coderhouse.ecommerce.abstracts.Producto;
-import com.coderhouse.ecommerce.entities.Usuario;
 import com.coderhouse.ecommerce.services.ProductoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

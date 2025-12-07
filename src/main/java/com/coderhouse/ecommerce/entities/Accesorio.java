@@ -2,7 +2,6 @@ package com.coderhouse.ecommerce.entities;
 
 import com.coderhouse.ecommerce.abstracts.Producto;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;

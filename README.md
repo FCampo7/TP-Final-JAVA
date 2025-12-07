@@ -42,6 +42,7 @@ Es el proyecto final de la diplomatura Full-Stack Web de CoderHouse.
     │               │   ├── AccesorioDTO.java
     │               │   ├── ProductoDTO.java
     │               │   └── RopaDTO.java
+    │               │   └── UsuarioDTO.java
     │               ├── EcommerceApplication.java
     │               ├── entities
     │               │   ├── Accesorio.java
